@@ -100,7 +100,7 @@ func (nDB *NetworkDB) clusterInit() error {
 	nDB.lastStatsTimestamp = time.Now()
 	nDB.lastHealthTimestamp = nDB.lastStatsTimestamp
 
-	config := memberlist.DefaultLANConfig()
+	config := memberlist.DefaultWANConfig()
 	config.Name = nDB.config.NodeID
 	config.BindAddr = nDB.config.BindAddr
 	config.AdvertiseAddr = nDB.config.AdvertiseAddr
@@ -510,9 +510,9 @@ func (nDB *NetworkDB) bulkSyncTables() {
 
 func (nDB *NetworkDB) bulkSync(nodes []string, all bool) ([]string, error) {
 	if !all {
-		// Get 2 random nodes. 2nd node will be tried if the bulk sync to
+		// Get 3 random nodes. 2nd/3rd nodes will be tried if the bulk sync to
 		// 1st node fails.
-		nodes = nDB.mRandomNodes(2, nodes)
+		nodes = nDB.mRandomNodes(3, nodes)
 	}
 
 	if len(nodes) == 0 {
